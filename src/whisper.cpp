@@ -7929,18 +7929,19 @@ static int64_t map_processed_to_original_time(int64_t processed_time, const std:
     return lower->original_time + (offset * original_diff) / processed_diff;
 }
 
-// Function to get the starting timestamp of a segment
-int64_t whisper_full_get_segment_t0_from_state(struct whisper_state * state, int i_segment) {
+int64_t whisper_full_get_t_from_state(struct whisper_state * state, int64_t t) {
     // If VAD wasn't used, return the original timestamp
     if (!state->has_vad_segments || state->vad_mapping_table.empty()) {
-        return state->result_all[i_segment].t0;
+        return t;
     }
-
-    // Get the processed timestamp
-    int64_t t0 = state->result_all[i_segment].t0;
-
     // Map to original time using the mapping table
-    return map_processed_to_original_time(t0, state->vad_mapping_table);
+    return map_processed_to_original_time(t, state->vad_mapping_table);
+}
+
+
+// Function to get the starting timestamp of a segment
+int64_t whisper_full_get_segment_t0_from_state(struct whisper_state * state, int i_segment) {
+    return  whisper_full_get_t_from_state(state, state->result_all[i_segment].t0);
 }
 
 // Function to get the ending timestamp of a segment

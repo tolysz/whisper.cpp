@@ -635,6 +635,9 @@ extern "C" {
     // Language id associated with the provided state
     WHISPER_API int whisper_full_lang_id_from_state(struct whisper_state * state);
 
+    // Get the time mapped via vad if needed
+    WHISPER_API int64_t whisper_full_get_t_from_state(struct whisper_state * state, int64_t t);
+
     // Get the start and end time of the specified segment
     WHISPER_API int64_t whisper_full_get_segment_t0           (struct whisper_context * ctx, int i_segment);
     WHISPER_API int64_t whisper_full_get_segment_t0_from_state(struct whisper_state * state, int i_segment);
